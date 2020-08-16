@@ -9,59 +9,101 @@ import java.util.Scanner;
 
 public class NumberNaming {
 
-	public static void takeNumber(int number) {
-		String numberAsString = String.valueOf(number);
-		int temp = 0;
-		int index = 0;
-		for (int i = 0; i < numberAsString.length(); i++) {
+	static String stringName = "";
 
-			int divider = checkNumberLenght(numberAsString);
-			if (readFile().containsKey(String.valueOf(number))) {
-				temp = number / divider;
-				number = number % divider;
-				numberAsString = numberAsString.substring(i + 1);
-				System.out.println(readFile().get(number));
+	public static void takeNumber(long number) {
+		String string = numberAsString(number);
+		String list = "";
+		for (int i = 1; i <= string.length(); i++) {
+			if (i % 3 == 0 && i < 6) {
+				list += " ";
+				list += string.charAt(i - 1);
+				list += " ";
+			} else {
+				if (i % 2 == 0 && i > 5) {
+					list += " ";
+				}
+				list += string.charAt(i - 1);
 			}
 		}
-
+		arrange(list);
 	}
 
-	public static String searchNumber(int temp) {
-		String name = "";
-		for (Map.Entry<String, String> m : readFile().entrySet()) {
-			if (Integer.valueOf(m.getKey()).equals(Integer.valueOf(temp))) {
-				name += m.getValue();
+	public static void arrange(String list) {
+		String[] str = list.split(" ");
+		Map<Long, String> m = new HashMap<>();
+		int i = 1;
+		StringBuilder builder = new StringBuilder();
+		for (String s : str) {
+			m.put((long) i, builder.append(s).reverse().toString());
+			i += 1;
+			builder.setLength(0);
+		}
+		m.forEach((a, b) -> {
+			stringName += name(a, b) + "\n";
+		});
+		String[] s = stringName.split("\n");
+		for (i = s.length - 1; i >= 0; i--) {
+			System.out.print(s[i] + "");
+		}
+	}
+
+	public static String name(long key, String str) {
+		String s = name(str);
+		if (!s.isEmpty()) {
+			switch ((int) key) {
+			case 1:
+				return name(str);
+			case 2:
+				return name(str) + "Hundred ";
+			case 3:
+				return name(str) + "Thousand ";
+			case 4:
+				return name(str) + "Lac ";
+			case 5:
+				return name(str) + "Crore ";
+			case 6:
+				return name(str) + "Arab ";
+			case 7:
+				return name(str) + "Kharab ";
+			default:
+				return "";
+			}
+		} else {
+			return "";
+		}
+	}
+
+	public static String name(String str) {
+		int strAsNum = Integer.valueOf(str);
+		if (strAsNum < 20) {
+			return name(strAsNum);
+		}
+		return name((strAsNum / 10) * 10) + name(strAsNum % 10);
+	}
+
+	public static String name(int number) {
+		String str = "";
+		for (Map.Entry<Integer, String> m : readFile().entrySet()) {
+			if (m.getKey() == number) {
+				str += m.getValue();
 			}
 		}
-		return name;
+		return str;
 	}
 
-	public static int checkNumberLenght(String string) {
-		int length = string.length();
-		switch (length) {
-		case 2:
-			return 10;
-		case 3:
-			return 100;
-		case 4:
-			return 1000;
-		case 5:
-			return 10000;
-		case 6:
-			return 100000;
-		default:
-			return 1;
-		}
+	public static String numberAsString(long number) {
+		return new StringBuilder(String.valueOf(number)).reverse().toString();
 	}
 
-	public static Map<String, String> readFile() {
+	public static Map<Integer, String> readFile() {
 		File file = new File("src\\com\\files\\numbers.txt");
-		Map<String, String> map = new HashMap<String, String>();
+		Map<Integer, String> map = new HashMap<Integer, String>();
 		try {
 			Scanner scan = new Scanner(new FileInputStream(file));
 			while (scan.hasNext()) {
 				String[] splits = scan.nextLine().split(",");
-				map.put(splits[0], splits[1]);
+				map.put(Integer.valueOf(splits[0]), splits[1]);
 			}
 			scan.close();
 		} catch (IOException e) {
@@ -71,7 +113,7 @@ public class NumberNaming {
 	}
 
 	public static void main(String[] args) {
-		NumberNaming.takeNumber(239);
+		NumberNaming.takeNumber(123405);
 	}
 
 }
