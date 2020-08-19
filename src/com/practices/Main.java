@@ -1,6 +1,6 @@
 package com.practices;
 
-public class Checkup {
+class Checkup {
 
 	int patientNumber = 0;
 
@@ -48,11 +48,11 @@ public class Checkup {
 		HDL = hDL;
 	}
 
-	public void coputeRetio() {
+	public void computeRatio() {
 		System.out.println(LDL / HDL);
 	}
 
-	public void explainRetio() {
+	public void explainRatio() {
 		if (LDL > 3.5) {
 			System.out.println("good cholesterol");
 		} else {
@@ -60,4 +60,14 @@ public class Checkup {
 		}
 	}
 
+}
+
+public class Main {
+	public static void main(String[] args) {
+		Checkup checkUp = new Checkup();
+		checkUp.setLDL(3.7);
+		checkUp.setHDL(2.1);
+		checkUp.computeRatio();
+		checkUp.explainRatio();
+	}
 }
