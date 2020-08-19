@@ -113,7 +113,7 @@ public class NumberNaming {
 	}
 
 	public static void main(String[] args) {
-		NumberNaming.takeNumber(123405);
+		NumberNaming.takeNumber(1325340005);
 	}
 
 }
